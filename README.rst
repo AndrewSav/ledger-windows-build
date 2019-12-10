@@ -10,10 +10,10 @@ on ``$PATH``.*
 
 #.  Install `Visual Studio Community 2019 <https://www.visualstudio.com/
     downloads/>`__
-#.  Install `CMake <https://cmake.org/download/>`__ 3.14.4
+#.  Install `CMake <https://cmake.org/download/>`__ 3.16.1
 #.  Clone `this repository <https://github.com/maxwell-k/
     ledger-windows-build/>`__
-#.  Build `Boost <http://www.boost.org/users/download/>`__ 1.70.0
+#.  Build `Boost <http://www.boost.org/users/download/>`__ 1.71.0
 #.  Build `MPIR <http://mpir.org/>`__ (master)
 #.  Build `MPFR <http://www.mpfr.org/mpfr-current/#download>`__ (master)
 #.  Build `ledger <http://ledger-cli.org/>`__ (master)
@@ -26,14 +26,14 @@ Detail
     Visual Studio Community 2019
 
 #.  `Download <https://github.com/Kitware/CMake/releases/download/
-    v3.14.4/cmake-3.14.4-win64-x64.msi>`__
+    v3.16.1/cmake-3.16.1-win64-x64.msi>`__
     and install CMake; adding it to the `PATH`
 
 *In the steps below 'at the command prompt' means use the `Developer
 Command Prompt for VS 2019` to execute the commands listed, starting with the
 current directory as the repository root.*
 
-3.  At the command prompt run the following to clone this repository and the
+#.  At the command prompt run the following to clone this repository and the
     sub-modules::
 
         git clone https://github.com/maxwell-k/ledger-windows-build --recursive
@@ -41,21 +41,15 @@ current directory as the repository root.*
     Use a different URL above if you are using a fork of the original
     instructions.
 
-#.  `Download <https://dl.bintray.com/boostorg/release/1.70.0/source/
-    boost_1_70_0.zip>`__ and extract ``boost_1_70_0`` to the root of this
+#.  `Download <https://dl.bintray.com/boostorg/release/1.71.0/source/
+    boost_1_71_0.zip>`__ and extract ``boost_1_71_0`` to the root of this
     repository, then build Boost using the following at the command prompt::
 
-        ren boost_1_70_0 boost
+        ren boost_1_71_0 boost
         cd boost
         .\bootstrap.bat
         .\b2.exe link=static runtime-link=static threading=multi ^
            --layout=versioned
-
-
-
-#.  Patch build files for `mpir`:
-    On lines 22 and 23 of `mpir\msvc\vs19\msbuild.bat` change `15.0` to `Current`.
-    On lines 76 and 85 of `mpir\msvc\vs19\lib_mpir_gc\lib_mpir_gc.vcxproj` change `17` to `19`
 
 #.  At the command prompt run the following to build `mpir`::
 
