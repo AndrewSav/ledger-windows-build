@@ -17,9 +17,9 @@ jobs:
       run: |
         Get-ChildItem env:
     - name: "Add msbuild to PATH"
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     - name: "Checkout sources"
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: "Checkout submodules"
       shell: powershell
       run: |
@@ -28,11 +28,6 @@ jobs:
       shell: powershell
       run: |
         .\build.ps1
-    - name: "Upload artifact"
-      uses: actions/upload-artifact@v3
-      with:
-        name: ledger
-        path: ledger\Release
     - name: "Create release archive"
       shell: powershell
       run: |
@@ -40,6 +35,6 @@ jobs:
       env:
         TAG: ${{ steps.get_tag.outputs.TAG }}
     - name: "Create Release"
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         files: ledger-${{ steps.get_tag.outputs.TAG }}.zip
