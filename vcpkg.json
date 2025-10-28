@@ -1,0 +1,18 @@
+{
+  "dependencies": [
+    "mpfr",
+    "icu",
+    "boost-uuid",
+    "boost-ptr-container",
+    "boost-format",
+    "boost-test",
+    "boost-date-time",
+    "boost-filesystem",
+    "boost-iostreams",
+    "boost-any",
+    "boost-foreach",
+    "boost-property-tree",
+    "boost-xpressive",
+    "boost-graph"
+  ]
+}

@@ -11,19 +11,15 @@ jobs:
       shell: powershell
       id: get_tag
       run: |
-        "::set-output name=TAG::$($env:GITHUB_REF.replace('refs/tags/',''))"
-    - name: Show environment variables
-      shell: powershell
-      run: |
-        Get-ChildItem env:
-    - name: "Add msbuild to PATH"
-      uses: microsoft/setup-msbuild@v2
+        "name=TAG::$($env:GITHUB_REF.replace('refs/tags/',''))" >> $env:GITHUB_OUTPUT
     - name: "Checkout sources"
       uses: actions/checkout@v5
-    - name: "Checkout submodules"
-      shell: powershell
+      with:
+        submodules: 'true'
+    - name: Copy vcpkg/CMake presets into ledger
+      shell: pwsh
       run: |
-        git -c protocol.version=2 submodule update --init --force --recursive --depth=1
+        Copy-Item -Path "vcpkg.json","CMakePresets.json" -Destination "ledger"
     - name: "Run build script"
       shell: powershell
       run: |

@@ -1,0 +1,32 @@
+{
+  "version": 10,
+  "configurePresets": [
+    {
+      "name": "release",
+      "generator": "Visual Studio 17 2022",
+      "architecture": {
+        "value": "x64"
+      },
+      "cacheVariables": {
+        "BUILD_LIBRARY": "OFF",
+        "BUILD_DOCS": "OFF",
+        "HAVE_GETPWUID": "OFF",
+        "HAVE_GETPWNAM": "OFF",
+        "HAVE_IOCTL": "OFF",
+        "HAVE_ISATTY": "OFF",
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static-release",
+        "CMAKE_CXX_STANDARD": "20",
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded",
+        "CMAKE_CXX_FLAGS_RELEASE": "/Zc:__cplusplus /D LITTLE_ENDIAN=1234 /D BIG_ENDIAN=4321 /D BYTE_ORDER=LITTLE_ENDIAN"
+      },
+      "toolchainFile": "${sourceDir}/../vcpkg/scripts/buildsystems/vcpkg.cmake"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "build-release",
+      "configurePreset": "release",
+      "configuration": "Release"
+    }
+  ]
+}

@@ -4,15 +4,14 @@ Three ways to build ledger on Windows are presented in this directory. All the s
 
 - The easy way is just download the binary from the Releases page in this GitHub repository. This binary is built with [GitHub Actions](https://github.com/features/actions) on GitHub hardware and software. 
 - You can build the binary yourself by installing the prerequisites, cloning the repository and running a provided PowerShell script.
-- The hard way is to run all the commands from the command line - this way you will know exactly what you are doing.
+- Or you can run the commands from the PowerShell script at command line one by one.
 
 The steps to compile ledger that the three ways mentioned above execute are:
 
 1. Install [Visual Studio 2022](https://www.visualstudio.com/downloads/). GitHub Actions use Visual Studio Enterprise. The PowerShell script and the Hard Way were tested on the Community Edition, but should work with other editions too.
 2. Install [CMake](https://cmake.org/download/) 4.1.2 was tested for manual installs. Actions use their own current version.
 3. Clone [this repository](https://github.com/andrewsav/ledger-windows-build)
-4. Clone [vcpkg](https://github.com/microsoft/vcpkg.git)
-5. Install boost, mpfr and icu
+5. Install/build boost, mpfr and icu with vcpkg
 7. Build [ledger](http://ledger-cli.org/) (v3.4.1)
 
 ## Automated Build with GitHub Actions
@@ -34,13 +33,15 @@ In order to kick off a new releases follow these steps:
   ```powershell
   cd ledger
   git checkout <tag>
+  cd ../vcpkg
+  git checkout master
   ```
-  
+
   *<u>Note</u>, that you have to replace `<tag>` above with tag, branch or commit number of the ledger repository commit you would like to build.*
-  
+
   *<u>Note</u>, that the above only works on a fresh `clone`, if you cloned this repo some time ago you will also have to `git pull` in the submodule directory.*
 
-  *<u>Note</u>, that other commits of the submodule than the one in this repository may require a different build process.*
+  *<u>Note</u>, that other commits of those submodules than those in this repository may require a different build process.*
 
 - Commit your changes, push the commit, tag it and push the tag:
 
@@ -63,8 +64,6 @@ These instructions were tested on **Windows 11**. They may also work on other fl
 
 - [Download](https://github.com/Kitware/CMake/releases/download/v3.27.7/cmake-3.27.7-windows-x86_64.msi) and install CMake; adding it to the `PATH`
 
-- [Download](https://www.7-zip.org/download.html), install 7zip, and make sure it's on `PATH`. `7z` boost archive is expanded much faster than `zip`
-
 - Clone the repository recursively:
 
   ```powershell
@@ -82,48 +81,6 @@ Open `Developer PowerShell for VS 2022` and make sure that the current folder is
 ```
 
 The build time can be an hour or more, depending on your machine. If there was no errors you should end up with `ledger.exe` in your current folder, when the build finishes.
-
-## Building Ledger the Hard Way
-
-*In the steps below 'at the command prompt' means use the `Developer PowerShell for VS 2022` to execute the commands listed, starting with the current directory as the repository root.*
-
-At the command prompt clone the vcpkg repository:
-
-```powershell
-git clone https://github.com/microsoft/vcpkg.git
-```
-
-At the command prompt run the following to build build `boost`, `mpfr` and `icu`:
-
-    cd vcpkg
-    ./bootstrap-vcpkg.bat
-    ./vcpkg install boost:x64-windows-static mpfr:x64-windows-static icu:x64-windows-static
-    cd ..
-
-At the command prompt run the following to build ``ledger.exe``:
-
-    cd ledger
-    cmake `
-      '-DCMAKE_BUILD_TYPE:STRING=Release' `
-      '-DBUILD_LIBRARY=OFF' `
-      '-DBUILD_DOCS:BOOL=0' `
-      '-DHAVE_GETPWUID:BOOL=0' `
-      '-DHAVE_GETPWNAM:BOOL=0' `
-      '-DHAVE_IOCTL:BOOL=0' `
-      '-DHAVE_ISATTY:BOOL=0' `
-      '-DCMAKE_TOOLCHAIN_FILE=..\vcpkg\scripts\buildsystems\vcpkg.cmake' `
-      '-DVCPKG_TARGET_TRIPLET=x64-windows-static' `
-      '-DCMAKE_CXX_STANDARD=20' `
-      '-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded' `
-      '-DCMAKE_CXX_FLAGS_RELEASE:STRING=/Zi /Ob0 /Od /Zc:__cplusplus /D LITTLE_ENDIAN=1234 /D BIG_ENDIAN=4321 /D BYTE_ORDER=LITTLE_ENDIAN' `
-      -B . `
-      -A x64 `
-      -G "Visual Studio 17"
-    msbuild /p:Configuration=Release src\ledger.vcxproj
-    cd ..
-    cp ledger\Release\ledger.exe ledger.exe
-
-You should now have `ledger.exe` at your current folder in the root of the cloned repository.
 
 ## Notes
 
