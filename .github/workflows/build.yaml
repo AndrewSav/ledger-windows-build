@@ -11,7 +11,7 @@ jobs:
       shell: powershell
       id: get_tag
       run: |
-        "name=TAG::$($env:GITHUB_REF.replace('refs/tags/',''))" >> $env:GITHUB_OUTPUT
+        "TAG=$($env:GITHUB_REF.replace('refs/tags/',''))" >> $env:GITHUB_OUTPUT
     - name: "Checkout sources"
       uses: actions/checkout@v5
       with:
